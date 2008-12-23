@@ -1,0 +1,5 @@
+S3method(plot, combimodel)
+S3method(plot, bilinmodel)
+S3method(plot, ojivemodel)
+S3method(plot, linmodel)
+export(combimodel, bilinmodel, ojivemodel, origmodel, linmodel, noinfmodel, plot.bilinmodel, plot.combimodel, plot.ojivemodel, plot.linmodel)

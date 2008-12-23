@@ -1,0 +1,139 @@
+\nonstopmode{}
+\documentclass[a4paper]{book}
+\usepackage[ae]{Rd}
+\usepackage{makeidx}
+\usepackage[@ENC@]{inputenc}
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge \R{} documentation}} \par\bigskip{{\Large of \file{ojivemodel.Rd}}}
+\par\bigskip{\large \today}
+\end{center}
+
+\HeaderA{ojivemodel}{Gottman-Murray Marriage Model with Ojive Influence}{ojivemodel}
+\keyword{models}{ojivemodel}
+\keyword{nonlinear}{ojivemodel}
+\begin{Description}\relax
+Fit the Gottman-Murray marriage model with the ojive influence
+function, optimizing the threshold.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}
+ojivemodel(weights, nregime = 3, mpr = NA)
+\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{weights}] A data frame with two columns, one for the wife (person
+1) and one for the husband (person 2) scores for each unit of time.
+\item[\code{nregime}] Number of regimes (either 2 or 3). If 2 regimes are
+specified, there is a negative and positive regime. If 3 regimes are
+specified, there is a negative, neutral, and positive
+regime. Default is 3.
+\item[\code{mpr}] Minimum number of observations per regime. If not specified, set to 10\% of observations. 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+This function fits the following Gottman-Murray model of marriage,
+where input is a series of discrete observations of the  wife (\eqn{W}{})
+and the husband (\eqn{H}{}). The same model can apply to single-sex couples,
+where the wife should be interpreted as partner 1 and the husband as
+partner 2. 
+
+\deqn{W_{t+1}= a_{0} + a_{1}W_{t} + I_{HW}(H_t)}{}
+
+\deqn{H_{t+1}= a_{0} + a_{1}H_{t} + I_{WH}(W_t)}{}
+
+In these equations, one partner exerts influence on the other as a
+function of the previous timestep, denoted by the influence functions
+\eqn{I_{HW}}{} (influence of husband on wife) or \eqn{I_{WH}}{} (influence
+of wife on husband). 
+
+The influence function here is an ojive function. This is based on the
+assumption that the influence of one partner on the other is constant
+until his/her behavior passes some critical value or threshold. The
+region to each side of the threshold is referred to as a regime. The
+ojive function used here is proposed by Hamaker, E., Zhang, Z., and
+Van der Maas, H.L. (See References). 
+
+For values in each regime, a horizontal line is fit to the influence.
+By varying the
+threshold values (one threshold if 2 regimes are used, and two
+thresholds if 3 regimes are used) we can determine the fit with the
+minimum sum of squares residuals. We can write the ojive influence
+functions as \eqn{I_{HW}(H_t)=}{}
+
+\deqn{\delta^{-}_w\quad \text{if} \quad H_t\le\tau^{-}_w}{l1 if H_t <= nth}
+\deqn{0 \quad \text{if} \quad \tau^{-}_{w} < H_t \le \tau^{-}_w}{0
+if nth < H_t}
+\deqn{\delta^{-}_w  \quad \text{if} \quad \tau^{+}_{w} < H_t }{l1 if
+pth < H_t}
+
+Parameters are estimated simultaneously using the method described by
+Hamaker, E., Zhang, Z., and Van der Maas, H.L. (See References).
+\end{Details}
+\begin{Value}
+\code{ojivemodel} returns a list consisting of the fit for the
+wife (person 1) and the husband (person 2). Each fit is an
+object of class \code{ojivemodel}.
+The \code{plot} method for \code{ojivemodel} objects graphs the
+score against the influence and the interpolated influence
+function. 
+An object of class \code{ojivemodel} contains the
+following parameters, depending on the number of regimes specified.
+\begin{ldescription}
+\item[\code{a0}] Initial state
+\item[\code{a1}] Inertia
+\item[\code{l1}] Difference in constant between neutral regime and negative
+regime
+\item[\code{l2}] Difference in constant between positive regime and neutral
+regime (3 regime only)
+\item[\code{th}] Threshold (2 regime only)
+\item[\code{nth}] Threshold between negative and neutral regime (3 regime only)
+\item[\code{pth}] Threshold between positive and neutral regime (3 regime only)
+\item[\code{ss}] Sum squared residuals
+\item[\code{loglik}] Log likelihood assuming equal variance of residuals
+across regimes
+\item[\code{nparams}] Number parameters, assuming unequal variance of
+residuals across regimes
+\item[\code{BICeq}] Bayesian Information Criterion calculated assuming equal
+variance of residuals across regimes
+\item[\code{BICneq}] Bayesian Information Criterion calculated assuming unequal
+variance of residuals across regimes
+\item[\code{nt}] Number of observations
+\item[\code{nregime}] Number of regimes (2 or 3)
+\item[\code{score}] Vector of scores
+\item[\code{influence}] Vector of influence, calculated using a0 and a1 above
+\end{ldescription}
+\end{Value}
+\begin{Author}\relax
+Tara Madhyastha and Ellen Hamaker
+\end{Author}
+\begin{References}\relax
+For a general description of the marriage model and influence functions, see
+Gottman, J. M., Murray, J. D., Swanson, C., Tyson, R., \& Swanson, K. R. (2003). \emph{The Mathematics of Marriage: Dynamic Nonlinear Models}. The MIT Press.
+
+The method of parameter estimation used here is described in
+Hamaker, E., Zhang, Z., Van der Maas, H.L. Using threshold autoregressive models to study dyadic interactions. Psychometrika, in press.
+\end{References}
+\begin{SeeAlso}\relax
+\code{\LinkA{bilinmodel}{bilinmodel}}, \code{\LinkA{combimodel}{combimodel}}, \code{\LinkA{origmodel}{origmodel}}
+\end{SeeAlso}
+\begin{Examples}
+\begin{ExampleCode}
+##---- Should be DIRECTLY executable !! ----
+##-- ==>  Define data, use random,
+##--    or do  help(data=index)  for the standard data sets.
+require(dyad)
+data(couple)
+## fit an ojive model with 3 regimes
+fit <- ojivemodel(couple, nregime=3);
+## plot influence function for husband on wife
+plot(fit$wife)
+
+\end{ExampleCode}
+\end{Examples}
+
+\printindex{}
+\end{document}

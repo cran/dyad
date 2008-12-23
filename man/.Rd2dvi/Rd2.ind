@@ -1,0 +1,21 @@
+\begin{theindex}
+
+  \item $*$Topic{\relax \fontsize  {12}{14}\selectfont  \ \textbf  {models}}
+    \subitem \texttt  {ojivemodel}, 1
+  \item $*$Topic{\relax \fontsize  {12}{14}\selectfont  \ \textbf  {nonlinear}}
+    \subitem \texttt  {ojivemodel}, 1
+
+  \indexspace
+
+  \item \texttt  {bilinmodel}, \textit{3}
+
+  \indexspace
+
+  \item \texttt  {combimodel}, \textit{3}
+
+  \indexspace
+
+  \item \texttt  {ojivemodel}, \textbf{1}
+  \item \texttt  {origmodel}, \textit{3}
+
+\end{theindex}
